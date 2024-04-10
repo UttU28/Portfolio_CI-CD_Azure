@@ -40,7 +40,6 @@ jobs:
     # Add your script execution step before any Terraform action
     - name: Execute Script
       run: |
-        echo "${{ ROOT_PATH }}"
         repoURL="https://github.com/UttU28/Portfolio.git"
     
         # if [ -d "${{ github.workspace }}/Portfolio" ]; then
@@ -48,8 +47,8 @@ jobs:
         #     rm -rf "${{ github.workspace }}/Portfolio"
         # fi
     
-        echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
-        git clone -b deployment "$repoURL" "${{ github.workspace }}"
+        # echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
+        git clone -b deployment "$repoURL"
         
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
