@@ -42,10 +42,10 @@ jobs:
       run: |
         repoURL="https://github.com/UttU28/Portfolio.git"
     
-        if [ -d "${{ github.workspace }}/Portfolio" ]; then
-            echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
-            rm -rf "${{ github.workspace }}/Portfolio"
-        fi
+        # if [ -d "${{ github.workspace }}/Portfolio" ]; then
+        #     echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
+        #     rm -rf "${{ github.workspace }}/Portfolio"
+        # fi
     
         echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
         git clone -b deployment "$repoURL" "${{ github.workspace }}"
