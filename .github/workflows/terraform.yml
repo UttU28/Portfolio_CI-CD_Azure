@@ -40,7 +40,7 @@ jobs:
     # Add your script execution step before any Terraform action
     - name: Execute Script
       run: |
-        echo ${{ROOT_PATH}}
+        echo "${{ ROOT_PATH }}"
         repoURL="https://github.com/UttU28/Portfolio.git"
     
         # if [ -d "${{ github.workspace }}/Portfolio" ]; then
