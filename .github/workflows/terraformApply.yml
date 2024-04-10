@@ -42,25 +42,5 @@ jobs:
         echo "${{ env.ARM_CLIENT_SECRET }}"
         az login --service-principal -u "${{ env.ARM_CLIENT_ID }}" -p "${{ env.ARM_CLIENT_SECRET }}" --tenant "${{ env.ARM_TENANT_ID }}" && az account set --subscription "${{ env.ARM_SUBSCRIPTION_ID }}"
       
-    # Add your script execution step before any Terraform action
-    # - name: Execute Script
-    #   run: |
-    #     repoURL="https://github.com/UttU28/Portfolio.git"
-    
-
-    #     # if [ -d "${{ github.workspace }}/Portfolio" ]; then
-    #     #     echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
-    #     #     rm -rf "${{ github.workspace }}/Portfolio"
-    #     # fi
-    
-    #     echo "Cloning Repo: $repoURL into directory: $ROOT_PATH"
-    #     git clone -b deployment "$repoURL"
-        
-
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init
-
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      run: terraform plan -input=false
+    - name: Terraform Apply
+      run: terraform apply --auto-approve -input=false
