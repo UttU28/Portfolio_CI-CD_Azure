@@ -37,8 +37,8 @@ jobs:
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    # - name: Log in to Azure CLI
-    #   run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }}
+    - name: Log in to Azure CLI
+      run: az login --service-principal -u ${{ secrets.ARM_CLIENT_ID }} -p ${{ secrets.ARM_CLIENT_SECRET }} --tenant ${{ secrets.ARM_TENANT_ID }} && az account set --subscription ${{ secrets.ARM_SUBSCRIPTION_ID }}
       
       
     # Add your script execution step before any Terraform action
