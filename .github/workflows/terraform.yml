@@ -39,7 +39,7 @@ jobs:
 
     - name: Log in to Azure CLI
       run: |
-        az login --service-principal -u "${{ secrets.ARM_CLIENT_ID }}" -p "${{ secrets.ARM_CLIENT_SECRET }}" --tenant "${{ secrets.ARM_TENANT_ID }}" && az account set --subscription "${{ secrets.ARM_SUBSCRIPTION_ID }}"
+        az login --service-principal -u "b4317ad4-6652-4e7c-947f-dd2f5f81b697" -p "lnS8Q~CJyyJxsyvRSO-6k2pGo6hVKjy2kyK5bcyU" --tenant "a8d3e12a-a4f9-47c3-b7bd-0f18f50c4713" && az account set --subscription "fb03483b-eece-41f0-8fca-b16b9e75cb43"
       
     # Add your script execution step before any Terraform action
     # - name: Execute Script
