@@ -1,0 +1,65 @@
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+    -  main
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  ARM_CLIENT_ID: ${{secrets.AZURE_CLIENT_ID}}
+  ARM_CLIENT_SECRET: ${{secrets.AZURE_CLIENT_SECRET}}
+  ARM_SUBSCRIPTION_ID: ${{secrets.AZURE_SUBSCRIPTION_ID}}
+  ARM_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
+  ROOT_PATH: '${{ github.workspace }}'
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Log in to Azure CLI
+      run: |
+        az login --service-principal -u "b4317ad4-6652-4e7c-947f-dd2f5f81b697" -p "lnS8Q~CJyyJxsyvRSO-6k2pGo6hVKjy2kyK5bcyU" --tenant "a8d3e12a-a4f9-47c3-b7bd-0f18f50c4713" && az account set --subscription "fb03483b-eece-41f0-8fca-b16b9e75cb43"
+      
+    # Add your script execution step before any Terraform action
+    # - name: Execute Script
+    #   run: |
+    #     repoURL="https://github.com/UttU28/Portfolio.git"
+    
+
+    #     # if [ -d "${{ github.workspace }}/Portfolio" ]; then
+    #     #     echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
+    #     #     rm -rf "${{ github.workspace }}/Portfolio"
+    #     # fi
+    
+    #     echo "Cloning Repo: $repoURL into directory: $ROOT_PATH"
+    #     git clone -b deployment "$repoURL"
+        
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan -input=false
