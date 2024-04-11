@@ -62,6 +62,12 @@ jobs:
     - name: Terraform Plan
       run: terraform plan -input=false -out=tfplan
 
+    - name: Upload tfplan artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: tfplan
+        path: tfplan
+
 
   terraformApply:
     name: 'Terraform APPLY'
@@ -84,6 +90,28 @@ jobs:
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+    - name: Download tfplan artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: tfplan
+        path: .
+
+    - name: Execute Script
+      run: |
+        repoURL="https://github.com/UttU28/Portfolio.git"
+    
+        ls
+
+        if [ -d "${{ github.workspace }}/Portfolio" ]; then
+            echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
+            rm -rf "${{ github.workspace }}/Portfolio"
+        fi
+    
+        echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
+        git clone -b deployment "$repoURL"
+        pwd
+        ls
+
     - name: Log in to Azure CLI
       run: |
         ls
@@ -91,6 +119,8 @@ jobs:
       
     - name: Terraform Init
       run: terraform init -input=false
+
+
 
     - name: Terraform Apply
       run: terraform apply --auto-approve -input=false tfplan
