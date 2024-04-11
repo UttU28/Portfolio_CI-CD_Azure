@@ -18,7 +18,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        
+
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -60,7 +60,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -input=false
+      run: terraform plan -input=false -out=tfplan
 
 
   terraformApply:
@@ -86,11 +86,12 @@ jobs:
 
     - name: Log in to Azure CLI
       run: |
+        ls
         az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" && az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
       
     - name: Terraform Init
       run: terraform init -input=false
 
     - name: Terraform Apply
-      run: terraform apply --auto-approve -input=false
+      run: terraform apply --auto-approve -input=false tfplan
     
