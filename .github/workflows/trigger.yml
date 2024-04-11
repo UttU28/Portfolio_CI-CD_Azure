@@ -1,0 +1,19 @@
+name: Trigger Workflow
+on: 
+  repository_dispatch:
+    types: [my-event]
+
+jobs:
+  build:
+    name: nowImTriggered
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Changes
+        uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+
+      - name: Print Details
+        run: |
+          echo ${{ github.event.client_payload.github.action }}
+          echo ${{ github.event.client_payload.github.actor }}
