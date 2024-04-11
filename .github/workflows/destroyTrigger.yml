@@ -1,56 +1,56 @@
-name: On Trigger GitHub API
+# name: On Trigger GitHub API
 
-on:
- repository_dispatch:
-    types: [triggerAPI]
+# on:
+#  repository_dispatch:
+#     types: [triggerAPI]
 
-jobs:
-  terraformPlan:
-    name: 'Trigger Terraform Plan'
-    runs-on: ubuntu-latest
-    env:
-       revision_number: ${{ github.event.client_payload.revision_number }}
+# jobs:
+#   terraformPlan:
+#     name: 'Trigger Terraform Plan'
+#     runs-on: ubuntu-latest
+#     env:
+#        revision_number: ${{ github.event.client_payload.revision_number }}
     
-    defaults:
-      run:
-        shell: bash
+#     defaults:
+#       run:
+#         shell: bash
 
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v3
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+#     - name: Setup Terraform
+#       uses: hashicorp/setup-terraform@v1
+#       with:
+#         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Execute Script
-      run: |
-        repoURL="https://github.com/UttU28/Pipeline_Site.git"
+#     - name: Execute Script
+#       run: |
+#         repoURL="https://github.com/UttU28/Pipeline_Site.git"
     
-        if [ -d "${{ github.workspace }}/Pipeline_Site" ]; then
-            echo "Deleting Existing Directory: ${{ github.workspace }}/Pipeline_Site"
-            rm -rf "${{ github.workspace }}/Pipeline_Site"
-        fi
+#         if [ -d "${{ github.workspace }}/Pipeline_Site" ]; then
+#             echo "Deleting Existing Directory: ${{ github.workspace }}/Pipeline_Site"
+#             rm -rf "${{ github.workspace }}/Pipeline_Site"
+#         fi
     
-        echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
-        git clone "$repoURL"
-        ls
+#         echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
+#         git clone "$repoURL"
+#         ls
 
-    - name: Log in to Azure CLI
-      run: |
-        az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" && az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+#     - name: Log in to Azure CLI
+#       run: |
+#         az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" && az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
       
         
 
-    - name: Terraform Init
-      run: terraform init
+#     - name: Terraform Init
+#       run: terraform init
 
-    - name: Terraform Plan
-      run: terraform plan -input=false -out=tfplan
+#     - name: Terraform Plan
+#       run: terraform plan -input=false -out=tfplan
 
-    - name: Upload tfplan artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: tfplan
-        path: tfplan
+#     - name: Upload tfplan artifact
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: tfplan
+#         path: tfplan
