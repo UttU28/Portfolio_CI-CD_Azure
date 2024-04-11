@@ -30,7 +30,7 @@ jobs:
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-    - name: Download ZIP & Destroy
+    - name: Download Destroy Plan
       run: |
         az storage blob download --container-name vault --name destructionPlan --file destructionPlan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
 
@@ -43,5 +43,5 @@ jobs:
 
     - name: Terraform Destroy
       run: |
-        terraform destroy --auto-approve -input=false
+        terraform apply --auto-approve -input=false destructionPlan
     
