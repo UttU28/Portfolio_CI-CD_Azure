@@ -1,0 +1,61 @@
+name: On Trigger GitHub API
+
+on:
+ repository_dispatch:
+    types: [terraformApply]
+
+# on:
+#   push:
+#     branches:
+#     -  main
+#   pull_request:
+
+
+jobs:
+  terraformApply:
+    name: 'Terraform APPLY'
+    runs-on: ubuntu-latest
+    environment: testing
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Execute Script
+      run: |
+        repoURL="https://github.com/UttU28/Pipeline_Site.git"
+    
+        if [ -d "${{ github.workspace }}/Pipeline_Site" ]; then
+            echo "Deleting Existing Directory: ${{ github.workspace }}/Pipeline_Site"
+            rm -rf "${{ github.workspace }}/Pipeline_Site"
+        fi
+    
+        echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
+        git clone "$repoURL"
+
+    - name: Log in to Azure CLI
+      run: |
+        az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" && az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      
+    - name: Terraform Init
+      run: terraform init -input=false
+
+    - name: Terraform Apply
+      run: |
+        az storage blob download --container-name vault --name tfplan --file tfplan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
+        if [ $? -eq 0 ]; then
+          echo "File DOewloaded, now APPLYING."
+          terraform apply --auto-approve -input=false tfplan
+        else
+          echo "Error: Failed to download tfplan, ABORTING APPLY"
+        fi
+    
