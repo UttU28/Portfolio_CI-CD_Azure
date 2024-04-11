@@ -34,8 +34,8 @@ jobs:
     - name: Checkout Source Repo
       uses: actions/checkout@v2
       with:
-        repository: owner/source-repo
-        ref: main  # Specify the branch or tag to checkout from the source repo
+        repository: UttU28/Portfolio
+        ref: deployment  # Specify the branch or tag to checkout from the source repo
 
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
