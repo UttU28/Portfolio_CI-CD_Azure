@@ -16,7 +16,7 @@ jobs:
     name: 'Trigger Terraform Plan'
     runs-on: ubuntu-latest
     env:
-       revision_number: ${{ github.event.client_payload.revision_number }}
+       planName: ${{ github.event.client_payload.planName }}
     
     defaults:
       run:
@@ -54,11 +54,15 @@ jobs:
       run: terraform init
 
     - name: Terraform Plan
-      run: terraform plan -input=false -out=tfplan
+      run: |
+        RAND=$(LC_CTYPE=C tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 8 | head -n 1)
+        terraform plan -input=false -out=myPlan$RAND
 
     - name: Store tfplan in Azure Blob Storage
       run: |
-        az storage blob upload --container-name vault --file tfplan --name tfplan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
+        echo $env.planName
+        echo $planName
+        # az storage blob upload --container-name vault --file tfplan --name tfplan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
     
 
   # terraformApply:
