@@ -45,8 +45,10 @@ jobs:
             rm -rf "${{ github.workspace }}/Portfolio"
         fi
     
-        echo "Cloning Repo: $repoURL into directory: $ROOT_PATH"
+        echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
         git clone -b deployment "$repoURL"
+        pwd
+        ls
         
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
