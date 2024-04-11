@@ -55,10 +55,10 @@ jobs:
 
     - name: Terraform Plan
       run: |
-        terraform plan -input=false -out=terraform.tfstate
+        terraform plan -input=false -out=terraformtfstate
         # terraform plan -input=false -out=destructionPlan -destroy
 
-    - name: Store terraform.tfstate in Azure Blob Storage
+    - name: Store terraformtfstate in Azure Blob Storage
       run: |
-        az storage blob upload --container-name vault --file terraform.tfstate --name terraform.tfstate --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
+        az storage blob upload --container-name vault --file terraformtfstate --name terraformtfstate --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
         # az storage blob upload --container-name vault --file destructionPlan --name destructionPlan --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
