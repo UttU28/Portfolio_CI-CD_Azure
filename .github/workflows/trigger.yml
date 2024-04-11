@@ -26,11 +26,11 @@ jobs:
 
     - name: Execute Script
       run: |
-        repoURL="https://github.com/UttU28/Portfolio.git"
+        repoURL="https://github.com/UttU28/Portfolio_CI-CD_Azure.git"
     
-        if [ -d "${{ github.workspace }}/Portfolio" ]; then
-            echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
-            rm -rf "${{ github.workspace }}/Portfolio"
+        if [ -d "${{ github.workspace }}/Portfolio_CI-CD_Azure" ]; then
+            echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio_CI-CD_Azure"
+            rm -rf "${{ github.workspace }}/Portfolio_CI-CD_Azure"
         fi
     
         echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
@@ -82,11 +82,11 @@ jobs:
 
     - name: Execute Script
       run: |
-        repoURL="https://github.com/UttU28/Portfolio.git"
+        repoURL="https://github.com/UttU28/Portfolio_CI-CD_Azure.git"
     
-        if [ -d "${{ github.workspace }}/Portfolio" ]; then
-            echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
-            rm -rf "${{ github.workspace }}/Portfolio"
+        if [ -d "${{ github.workspace }}/Portfolio_CI-CD_Azure" ]; then
+            echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio_CI-CD_Azure"
+            rm -rf "${{ github.workspace }}/Portfolio_CI-CD_Azure"
         fi
     
         echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
