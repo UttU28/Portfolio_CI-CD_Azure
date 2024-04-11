@@ -39,16 +39,13 @@ jobs:
 
     - name: Download ZIP & Destroy
       run: |
-        az storage blob download --container-name vault --name .terraform.zip --file .terraform.zip --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
         unzip -o .terraform.zip
-        terraform destroy --auto-approve -input=false tfplan
-
-    # - name: Terraform Destroy
-    #   run: |
-    #     az storage blob download --container-name vault --name tfplan --file tfplan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
-    #     if [ $? -eq 0 ]; then
-    #       echo "State File DOewloaded."
-    #     else
-    #       echo "Error: Failed to download tfplan, ABORTING DESTROY"
-    #     fi
+        az storage blob download --container-name vault --name .terraform.zip --file .terraform.zip --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
+        az storage blob download --container-name vault --name tfplan --file tfplan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
+        if [ $? -eq 0 ]; then
+          echo "State File DOewloaded."
+          terraform destroy --auto-approve -input=false tfplan
+        else
+          echo "Error: Failed to download tfplan, ABORTING DESTROY"
+        fi
     
