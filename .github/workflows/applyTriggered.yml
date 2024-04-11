@@ -59,10 +59,10 @@ jobs:
           echo "Error: Failed to download creationPlan, ABORTING APPLY"
         fi
 
-    - name: Terraform Destroy Plan
-      run: terraform plan -input=false -out=destructionPlan -destroy
+    # - name: Terraform Destroy Plan
+    #   run: terraform plan -input=false -out=destructionPlan -destroy
 
-    - name: Upload Destroy Plan
-      run: |
-        az storage blob upload --container-name vault --file destructionPlan --name destructionPlan --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
+    # - name: Upload Destroy Plan
+    #   run: |
+    #     az storage blob upload --container-name vault --file destructionPlan --name destructionPlan --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
     
