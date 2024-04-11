@@ -1,32 +1,104 @@
-name: Workflow2
+name: On Trigger GitHub API
 
-# Controls when the workflow will run
 on:
  repository_dispatch:
-    types: [Workflow2]
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+    types: [triggerAPI]
+
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  terraformPlan:
+    name: 'Trigger Terraform Plan'
     runs-on: ubuntu-latest
     env:
-       baselineTag: ${{ github.event.client_payload.baselinetag }}
        revision_number: ${{ github.event.client_payload.revision_number }}
+    
+    defaults:
+      run:
+        shell: bash
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-          echo $baselineTag
-          echo $revision_number
+    - name: Execute Script
+      run: |
+        repoURL="https://github.com/UttU28/Portfolio.git"
+    
+        if [ -d "${{ github.workspace }}/Portfolio" ]; then
+            echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
+            rm -rf "${{ github.workspace }}/Portfolio"
+        fi
+    
+        echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
+        git clone -b deployment "$repoURL"
+
+    - name: Log in to Azure CLI
+      run: |
+        az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" && az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      
+        
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Plan
+      run: terraform plan -input=false -out=tfplan
+
+    - name: Upload tfplan artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: tfplan
+        path: tfplan
+
+
+  terraformApply:
+    name: 'Terraform APPLY'
+    runs-on: ubuntu-latest
+    needs: [terraformPlan]
+    environment: testing
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    - name: Download tfplan artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: tfplan
+        path: .
+
+    - name: Execute Script
+      run: |
+        repoURL="https://github.com/UttU28/Portfolio.git"
+    
+        if [ -d "${{ github.workspace }}/Portfolio" ]; then
+            echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
+            rm -rf "${{ github.workspace }}/Portfolio"
+        fi
+    
+        echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
+        git clone -b deployment "$repoURL"
+
+    - name: Log in to Azure CLI
+      run: |
+        az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" && az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      
+    - name: Terraform Init
+      run: terraform init -input=false
+
+    - name: Terraform Apply
+      run: terraform apply --auto-approve -input=false tfplan
+    
