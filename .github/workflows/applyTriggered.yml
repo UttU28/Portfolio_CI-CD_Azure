@@ -59,10 +59,10 @@ jobs:
           echo "Error: Failed to download tfplan, ABORTING APPLY"
         fi
 
-    - name: Upload Zip
+    - name: Terraform Destroy Plan
+      run: terraform plan -input=false -out=destructionPlan -destroy
+
+    - name: Upload Destroy Plan
       run: |
-        # zip -r .terraform.zip .terraform/ 
-        find . -type d -name 'Pipeline_Site' -prune -o -print | zip archive.zip -@
-        az storage blob upload --container-name vault --file archive.zip --name archive.zip --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
-        ls -al
+        az storage blob upload --container-name vault --file destructionPlan --name destructionPlan --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
     
