@@ -40,7 +40,7 @@ jobs:
     - name: Download ZIP & Destroy
       run: |
         az storage blob download --container-name vault --name .terraform.zip --file .terraform.zip --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
-        unzip .terraform.zip
+        unzip -o .terraform.zip
         terraform destroy --auto-approve -input=false tfplan
 
     # - name: Terraform Destroy
