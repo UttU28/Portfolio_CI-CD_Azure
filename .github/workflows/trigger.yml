@@ -26,7 +26,6 @@ jobs:
 
     - name: Execute Script
       run: |
-        ls
         repoURL="https://github.com/UttU28/Pipeline_Site.git"
     
         if [ -d "${{ github.workspace }}/Pipeline_Site" ]; then
@@ -84,7 +83,6 @@ jobs:
 
     - name: Execute Script
       run: |
-        ll
         repoURL="https://github.com/UttU28/Pipeline_Site.git"
     
         if [ -d "${{ github.workspace }}/Pipeline_Site" ]; then
@@ -94,7 +92,6 @@ jobs:
     
         echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
         git clone "$repoURL"
-        ll
 
     - name: Log in to Azure CLI
       run: |
