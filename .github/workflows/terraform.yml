@@ -35,6 +35,7 @@ jobs:
       run: |
         repoURL="https://github.com/UttU28/Portfolio.git"
     
+        ls
 
         if [ -d "${{ github.workspace }}/Portfolio" ]; then
             echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
@@ -45,7 +46,7 @@ jobs:
         git clone -b deployment "$repoURL"
         pwd
         ls
-        
+
     - name: Log in to Azure CLI
       run: |
         az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" && az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
