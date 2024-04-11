@@ -1,14 +1,14 @@
 name: On Trigger GitHub API
 
-on:
- repository_dispatch:
-    types: [triggerAPI]
-
 # on:
-#   push:
-#     branches:
-#     -  main
-#   pull_request:
+#  repository_dispatch:
+#     types: [triggerAPI]
+
+on:
+  push:
+    branches:
+    -  main
+  pull_request:
 
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
     name: 'Trigger Terraform Plan'
     runs-on: ubuntu-latest
     env:
-       planName: ${{ github.event.client_payload.planName }}
+       revision_number: ${{ github.event.client_payload.revision_number }}
     
     defaults:
       run:
@@ -54,15 +54,11 @@ jobs:
       run: terraform init
 
     - name: Terraform Plan
-      run: |
-        RAND=$(LC_CTYPE=C tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 8 | head -n 1)
-        terraform plan -input=false -out=myPlan$RAND
+      run: terraform plan -input=false -out=tfplan
 
     - name: Store tfplan in Azure Blob Storage
       run: |
-        echo $env.planName
-        echo $planName
-        # az storage blob upload --container-name vault --file tfplan --name tfplan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
+        az storage blob upload --container-name vault --file tfplan --name tfplan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
     
 
   # terraformApply:
