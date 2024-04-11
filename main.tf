@@ -40,3 +40,7 @@ data "azurerm_storage_account" "example" {
 output "static_website_url" {
   value = data.azurerm_storage_account.example.primary_web_endpoint
 }
+
+output "pathModule" {
+  value = ${path.module}
+}
