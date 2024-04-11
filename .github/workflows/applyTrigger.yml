@@ -1,16 +1,16 @@
 name: On Trigger GitHub API
 
-# on:
-#  repository_dispatch:
-#     types: [triggerAPI]
-
 on:
-  push:
-    branches:
-    -  main
-  pull_request:
+ repository_dispatch:
+    types: [triggerAPI]
 
-    
+# on:
+#   push:
+#     branches:
+#     -  main
+#   pull_request:
+
+
 jobs:
   terraformPlan:
     name: 'Trigger Terraform Plan'
