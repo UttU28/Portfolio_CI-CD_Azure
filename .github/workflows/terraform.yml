@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   terraformPlan:
-    name: 'Terraform'
+    name: 'Terraform PLAN'
     runs-on: ubuntu-latest
     # environment: testing
 
@@ -35,18 +35,18 @@ jobs:
         az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" && az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
       
     # Add your script execution step before any Terraform action
-    # - name: Execute Script
-    #   run: |
-    #     repoURL="https://github.com/UttU28/Portfolio.git"
+    - name: Execute Script
+      run: |
+        repoURL="https://github.com/UttU28/Portfolio.git"
     
 
-    #     # if [ -d "${{ github.workspace }}/Portfolio" ]; then
-    #     #     echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
-    #     #     rm -rf "${{ github.workspace }}/Portfolio"
-    #     # fi
+        if [ -d "${{ github.workspace }}/Portfolio" ]; then
+            echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio"
+            rm -rf "${{ github.workspace }}/Portfolio"
+        fi
     
-    #     echo "Cloning Repo: $repoURL into directory: $ROOT_PATH"
-    #     git clone -b deployment "$repoURL"
+        echo "Cloning Repo: $repoURL into directory: $ROOT_PATH"
+        git clone -b deployment "$repoURL"
         
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
@@ -59,9 +59,9 @@ jobs:
 
 
   terraformApply:
-    name: 'Terraform'
+    name: 'Terraform APPLY'
     runs-on: ubuntu-latest
-    needs: [ terraformPlan ]
+    needs: [terraformPlan]
     environment: testing
 
     defaults:
@@ -83,6 +83,9 @@ jobs:
       run: |
         az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" && az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
       
+    - name: Terraform Init
+      run: terraform init -input=false
+
     - name: Terraform Apply
       run: terraform apply --auto-approve -input=false
     
