@@ -42,5 +42,5 @@ output "static_website_url" {
 }
 
 output "pathModule" {
-  value = ${path.module}
+  value = path.module
 }
