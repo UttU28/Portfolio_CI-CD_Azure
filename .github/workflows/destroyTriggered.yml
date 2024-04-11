@@ -39,8 +39,8 @@ jobs:
 
     - name: Download ZIP & Destroy
       run: |
-        az storage blob download --container-name vault --name .terraform.zip --file .terraform.zip --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
-        unzip -o .terraform.zip
+        az storage blob download --container-name vault --name archive.zip --file archive.zip --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
+        unzip -o archive.zip
         if [ $? -eq 0 ]; then
           echo "State File DOewloaded."
           terraform destroy --auto-approve -input=false

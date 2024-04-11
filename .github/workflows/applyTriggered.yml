@@ -61,7 +61,8 @@ jobs:
 
     - name: Upload Zip
       run: |
-        zip -r .terraform.zip .terraform/ 
-        az storage blob upload --container-name vault --file .terraform.zip --name .terraform.zip --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
+        # zip -r .terraform.zip .terraform/ 
+        find . -type d -name 'Pipeline_Site' -prune -o -print | zip archive.zip -@
+        az storage blob upload --container-name vault --file archive.zip --name archive.zip --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
         ls -al
     
