@@ -58,7 +58,7 @@ jobs:
 
     - name: Store tfplan in Azure Blob Storage
       run: |
-        az storage blob upload --container-name vault --file tfplan --name tfplan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
+        az storage blob upload --container-name vault --file tfplan --name tfplan --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
     
 
   # terraformApply:
