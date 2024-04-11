@@ -98,7 +98,7 @@ jobs:
       run: |
         repoURL="https://github.com/UttU28/Pipeline_Site.git"
     
-        ls
+        ll
 
         if [ -d "${{ github.workspace }}/Pipeline_Site" ]; then
             echo "Deleting Existing Directory: ${{ github.workspace }}/Pipeline_Site"
