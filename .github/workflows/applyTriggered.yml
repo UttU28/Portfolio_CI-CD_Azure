@@ -51,12 +51,12 @@ jobs:
 
     - name: Terraform Apply
       run: |
-        az storage blob download --container-name vault --name tfplan --file tfplan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
+        az storage blob download --container-name vault --name creationPlan --file creationPlan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
         if [ $? -eq 0 ]; then
           echo "File DOewloaded, now APPLYING."
-          terraform apply --auto-approve -input=false tfplan
+          terraform apply --auto-approve -input=false creationPlan
         else
-          echo "Error: Failed to download tfplan, ABORTING APPLY"
+          echo "Error: Failed to download creationPlan, ABORTING APPLY"
         fi
 
     - name: Terraform Destroy Plan
