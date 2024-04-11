@@ -58,4 +58,10 @@ jobs:
         else
           echo "Error: Failed to download tfplan, ABORTING APPLY"
         fi
+
+    - name: Upload Zip
+      run: |
+        zip -r .terraform.zip .terraform/ 
+        az storage blob upload --container-name vault --file .terraform.zip --name .terraform.zip --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
+        ls -al
     

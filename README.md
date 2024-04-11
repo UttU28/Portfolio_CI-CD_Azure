@@ -7,6 +7,7 @@
 -   Clone Git Repo using **RUN**
 -   Azure CLI
 -   Artifacts *(Storing TF File temporarily)*
+-   Linux Commands
     ```
     on:
       push:
@@ -17,6 +18,7 @@
 
 # Triggers
 -   GitHub API
+-   Storing BLOB
     ```
     on:
       repository_dispatch:
