@@ -26,11 +26,11 @@ jobs:
 
     - name: Execute Script
       run: |
-        repoURL="https://github.com/UttU28/Portfolio_CI-CD_Azure.git"
+        repoURL="https://github.com/UttU28/Pipeline_Site.git"
     
-        if [ -d "${{ github.workspace }}/Portfolio_CI-CD_Azure" ]; then
-            echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio_CI-CD_Azure"
-            rm -rf "${{ github.workspace }}/Portfolio_CI-CD_Azure"
+        if [ -d "${{ github.workspace }}/Pipeline_Site" ]; then
+            echo "Deleting Existing Directory: ${{ github.workspace }}/Pipeline_Site"
+            rm -rf "${{ github.workspace }}/Pipeline_Site"
         fi
     
         echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
@@ -82,11 +82,11 @@ jobs:
 
     - name: Execute Script
       run: |
-        repoURL="https://github.com/UttU28/Portfolio_CI-CD_Azure.git"
+        repoURL="https://github.com/UttU28/Pipeline_Site.git"
     
-        if [ -d "${{ github.workspace }}/Portfolio_CI-CD_Azure" ]; then
-            echo "Deleting Existing Directory: ${{ github.workspace }}/Portfolio_CI-CD_Azure"
-            rm -rf "${{ github.workspace }}/Portfolio_CI-CD_Azure"
+        if [ -d "${{ github.workspace }}/Pipeline_Site" ]; then
+            echo "Deleting Existing Directory: ${{ github.workspace }}/Pipeline_Site"
+            rm -rf "${{ github.workspace }}/Pipeline_Site"
         fi
     
         echo "Cloning Repo: $repoURL into directory: ${{ github.workspace }}"
