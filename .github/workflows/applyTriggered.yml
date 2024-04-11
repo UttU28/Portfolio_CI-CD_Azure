@@ -54,8 +54,8 @@ jobs:
         az storage blob download --container-name vault --name terraform.tfstate --file terraform.tfstate --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
         if [ $? -eq 0 ]; then
           echo "File DOewloaded, now APPLYING."
-          terraform apply --auto-approve -input=false
           # terraform apply --auto-approve -input=false terraform.tfstate
+          terraform apply --auto-approve -input=false terraform.tfstate
         else
           echo "Error: Failed to download terraform.tfstate, ABORTING APPLY"
         fi
