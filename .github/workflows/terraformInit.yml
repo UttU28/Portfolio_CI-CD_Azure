@@ -9,18 +9,10 @@ on:
 permissions:
   contents: read
 
-env:
-  ARM_CLIENT_ID: ${{secrets.AZURE_CLIENT_ID}}
-  ARM_CLIENT_SECRET: ${{secrets.AZURE_CLIENT_SECRET}}
-  ARM_SUBSCRIPTION_ID: ${{secrets.AZURE_SUBSCRIPTION_ID}}
-  ARM_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
-  ROOT_PATH: '${{ github.workspace }}'
-
 jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: production
 
     defaults:
       run:
@@ -39,7 +31,7 @@ jobs:
 
     - name: Log in to Azure CLI
       run: |
-        az login --service-principal -u "${{ env.ARM_CLIENT_ID }}" -p "${{ env.ARM_CLIENT_SECRET }}" --tenant "${{ env.ARM_TENANT_ID }}" && az account set --subscription "${{ env.ARM_SUBSCRIPTION_ID }}"
+        az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}" && az account set --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
       
     # Add your script execution step before any Terraform action
     # - name: Execute Script
