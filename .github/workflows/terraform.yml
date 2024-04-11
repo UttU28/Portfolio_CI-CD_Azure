@@ -1,29 +1,42 @@
 name: 'Terraform Init'
 
+# on:
+#   push:
+#     branches:
+#     -  main
+#   pull_request:
+
 on:
-  push:
-    branches:
-    -  main
-  pull_request:
+  repository_dispatch:
+    types: [trigger-changes]
+  
 
 permissions:
   contents: read
 
+# jobs:
+#   terraformPlan:
+#     name: 'Terraform PLAN'
+#     runs-on: ubuntu-latest
+
+#     defaults:
+#       run:
+#         shell: bash
+
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v3
+
 jobs:
   terraformPlan:
-    name: 'Terraform PLAN'
     runs-on: ubuntu-latest
-    # environment: testing
-
-    defaults:
-      run:
-        shell: bash
-
-
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3
+    - name: Checkout Source Repo
+      uses: actions/checkout@v2
+      with:
+        repository: owner/source-repo
+        ref: main  # Specify the branch or tag to checkout from the source repo
+
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
