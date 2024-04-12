@@ -32,7 +32,7 @@ jobs:
 
     - name: Download State Plans
       run: |
-        az storage blob download --container-name vault --name terraformtfstate --file terraformtfstate --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
+        az storage blob download --container-name vault --name terraform.tfstate --file terraform.tfstate --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
         az storage blob download --container-name vault --name destructionPlan --file destructionPlan --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
 
     - name: Log in to Azure CLI
