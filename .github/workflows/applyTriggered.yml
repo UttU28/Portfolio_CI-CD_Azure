@@ -51,19 +51,19 @@ jobs:
 
     - name: Terraform Apply
       run: |
-        az storage blob download --container-name vault --name terraform.tfstate --file terraform.tfstate --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
+        az storage blob download --container-name vault --name abcdef --file abcdef --connection-string "${{ secrets.AZURE_STORAGE_ID }}"
         if [ $? -eq 0 ]; then
           echo "File DOewloaded, now APPLYING."
           # terraform apply --auto-approve -input=false terraform.tfstate
-          terraform apply --auto-approve -input=false terraform.tfstate
+          terraform apply --auto-approve -input=false abcdef
         else
           echo "Error: Failed to download terraform.tfstate, ABORTING APPLY"
         fi
 
-    - name: Terraform Destroy Plan
-      run: terraform plan -input=false -out=destructionPlan -destroy
+    # - name: Terraform Destroy Plan
+    #   run: terraform plan -input=false -out=destructionPlan -destroy
 
-    - name: Upload Destroy Plan
-      run: |
-        az storage blob upload --container-name vault --file destructionPlan --name destructionPlan --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
+    # - name: Upload Destroy Plan
+    #   run: |
+    #     az storage blob upload --container-name vault --file destructionPlan --name destructionPlan --connection-string "${{ secrets.AZURE_STORAGE_ID }}" --overwrite
     
